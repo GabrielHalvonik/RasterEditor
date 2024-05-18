@@ -14,8 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGLWidgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        Widget.cpp
-        Widget.hpp
+        Visuals/Widget.cpp Visuals/Widget.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -23,6 +22,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
+        Utilities/General.hpp Utilities/Compression.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET RasterEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
