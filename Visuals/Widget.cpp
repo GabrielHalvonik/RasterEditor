@@ -17,8 +17,8 @@
 #include <QSvgRenderer>
 #include <QToolButton>
 
-#include "../Utilities/General.hpp"
-#include "../Utilities/Compression.hpp"
+#include "../Core/Utilities/General.hpp"
+#include "../Core/Utilities/Compression.hpp"
 
 QIcon loadSvgIcon(const QString &svgData, const QSize &size) {
     QSvgRenderer renderer(svgData.toUtf8());
@@ -58,7 +58,7 @@ Widget::Widget(QWidget* parent) : QOpenGLWidget(parent) {
     group->setExclusive(true);
 
     {
-        QFile file(":/icons/brush.svg");
+        QFile file(":/resources/icons/brush.svg");
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QTextStream stream(&file);
             QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
@@ -75,7 +75,7 @@ Widget::Widget(QWidget* parent) : QOpenGLWidget(parent) {
         }
     }
     {
-        QFile file(":/icons/pen.svg");
+        QFile file(":/resources/icons/pen.svg");
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QTextStream stream(&file);
             QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
@@ -91,7 +91,7 @@ Widget::Widget(QWidget* parent) : QOpenGLWidget(parent) {
         }
     }
     {
-        QFile file(":/icons/eraser.svg");
+        QFile file(":/resources/icons/eraser.svg");
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QTextStream stream(&file);
             QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
@@ -122,7 +122,7 @@ Widget::Widget(QWidget* parent) : QOpenGLWidget(parent) {
     image.fill(Qt::white);
     brush.fill(Qt::transparent);
 
-    brush.load(":/brushes/brush.png");
+    brush.load(":/resources/brushes/brush.png");
 
     erase.fill(Qt::transparent);
     QPainter erasePainter { &erase };

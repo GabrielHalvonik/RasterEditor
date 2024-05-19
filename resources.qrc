@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>brushes/brush.png</file>
-        <file>icons/brush.svg</file>
-        <file>icons/eraser.svg</file>
-        <file>icons/pen.svg</file>
+        <file>resources/brushes/brush.png</file>
+        <file>resources/icons/brush.svg</file>
+        <file>resources/icons/pen.svg</file>
+        <file>resources/icons/eraser.svg</file>
+        <file>resources/styles/General.qss</file>
     </qresource>
 </RCC>
