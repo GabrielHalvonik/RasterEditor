@@ -7,10 +7,118 @@
 #include <QFileDialog>
 #include <QPaintEvent>
 
+#include <QFrame>
+#include <QToolBar>
+#include <QVBoxLayout>
+
+#include <QActionGroup>
+#include <QButtonGroup>
+#include <QIcon>
+#include <QSvgRenderer>
+#include <QToolButton>
+
 #include "../Utilities/General.hpp"
 #include "../Utilities/Compression.hpp"
 
+QIcon loadSvgIcon(const QString &svgData, const QSize &size) {
+    QSvgRenderer renderer(svgData.toUtf8());
+    QPixmap pixmap(size);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::RenderHint::Antialiasing, false);
+    renderer.render(&painter);
+
+    return QIcon(pixmap);
+}
+
 Widget::Widget(QWidget* parent) : QOpenGLWidget(parent) {
+
+    paintingToolRegistry.registerPaintingActions({
+        PaintingToolFactory::construct(PaintingToolType::Brush),
+        PaintingToolFactory::construct(PaintingToolType::Eraser),
+    });
+
+        paintingToolRegistry.setCurrentToolType(PaintingToolType::Brush);
+
+    auto frame = new QFrame();
+    frame->setStyleSheet("QFrame { border-radius: 6px; background-color: dark-gray; }");
+    auto layout = new QVBoxLayout();
+    auto bar = new QToolBar();
+    bar->setOrientation(Qt::Orientation::Vertical);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    bar->setStyleSheet("QToolBar { spacing: 0px; border-radius: 6px; background-color: rgb(50, 50, 55); } QToolBar QToolButton { border: 0px; margin: 0px; padding: 0px; } QToolBar QToolButton:checked { background-color: rgb(85, 85, 85); } QToolBar QToolButton[position=\"first\"] { border-top-left-radius: 6px; border-top-right-radius: 6px; } QToolBar QToolButton[position=\"last\"] { border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }");
+
+    layout->addWidget(bar);
+    frame->setLayout(layout);
+    // frame->setStyleSheet("QFrame { border-radius: 6px; background-color: red; }");
+
+    // QActionGroup* group = new QActionGroup(this);
+    QButtonGroup* group = new QButtonGroup(this);
+    group->setExclusive(true);
+
+    {
+        QFile file(":/icons/brush.svg");
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            QTextStream stream(&file);
+            QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
+            // group->setExclusive(true);
+            // group.setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+            QToolButton* button = new QToolButton();
+            button->setFixedSize(32, 32);
+            group->addButton(button);
+            button->setCheckable(true);
+            button->setIcon(icon);
+            button->setProperty("position", "first");
+            bar->addWidget(button);
+            file.close();
+        }
+    }
+    {
+        QFile file(":/icons/pen.svg");
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            QTextStream stream(&file);
+            QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
+            // group->setExclusive(true);
+            // group.setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+            QToolButton* button = new QToolButton();
+            button->setFixedSize(32, 32);
+            group->addButton(button);
+            button->setCheckable(true);
+            button->setIcon(icon);
+            bar->addWidget(button);
+            file.close();
+        }
+    }
+    {
+        QFile file(":/icons/eraser.svg");
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            QTextStream stream(&file);
+            QIcon icon = loadSvgIcon(stream.readAll(), QSize(20, 20));
+            // group->setExclusive(true);
+            // group.setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+            QToolButton* button2 = new QToolButton();
+            button2->setFixedSize(32, 32);
+            group->addButton(button2);
+            button2->setCheckable(true);
+            button2->setIcon(icon);
+            button2->setProperty("position", "last");
+            bar->addWidget(button2);
+            file.close();
+        }
+    }
+
+    frame->setGeometry(8, 200, 32, group->buttons().size() * 32);
+    frame->setParent(this);
+
+
+    // Create an action with the icon
+
+    // Add the action to the toolbar
+
+
+
+
     image.fill(Qt::white);
     brush.fill(Qt::transparent);
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <stack>
 #include <QWidget>
 #include <QPixmap>
@@ -7,7 +8,11 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 
+#include "../Core/Painting/PaintingToolRegisty.hpp"
+#include "../Core/Painting/PaintingToolFactory.hpp"
+
 class QPainter;
+class BrushAction;
 
 struct Delta {
     QRect region { };
@@ -46,6 +51,9 @@ private:
     void pushIntoUndoStack(const Delta&);
 
 private:
+
+    PaintingToolRegistry paintingToolRegistry;
+
     const int bytesPerPixel = 4;
 
     QImage image { PageSize, PageSize, QImage::Format::Format_ARGB32 };
@@ -64,9 +72,3 @@ private:
 
     Snapshot bitmapSnapshot { };
 };
-
-
-
-
-
-

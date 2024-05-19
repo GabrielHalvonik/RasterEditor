@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>brushes/brush.png</file>
+        <file>icons/brush.svg</file>
+        <file>icons/eraser.svg</file>
+        <file>icons/pen.svg</file>
     </qresource>
 </RCC>
