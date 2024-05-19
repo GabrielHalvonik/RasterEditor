@@ -29,7 +29,50 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Core/Painting/PaintingToolRegisty.hpp
         Core/Painting/PaintingToolFactory.hpp
         Core/Painting/EraserAction.hpp Core/Painting/EraserAction.cpp
-        Utilities/AnonymousObservable.hpp Utilities/Bind.hpp Utilities/Bindable.hpp Utilities/Event.hpp Utilities/General.hpp Utilities/Handler.hpp Utilities/Observable.hpp Utilities/Parameter.hpp Utilities/Property.hpp Utilities/Resources.hpp Utilities/Slot.hpp
+        Utilities/AnonymousObservable.hpp
+        Utilities/Bind.hpp
+        Utilities/Bindable.hpp
+        Utilities/Event.hpp
+        Utilities/General.hpp
+        Utilities/Handler.hpp
+        Utilities/Observable.hpp
+        Utilities/Parameter.hpp
+        Utilities/Property.hpp
+        Utilities/Resources.hpp
+        Utilities/Slot.hpp
+        Visuals/Custom/VectorEditor.hpp
+        Visuals/Custom/VectorEditor.cpp
+        Visuals/Custom/EditorTabBar.hpp
+        Visuals/Basics/PushButton.hpp
+        Visuals/Basics/Dialog.hpp
+        Visuals/Basics/FormLayout.hpp
+        Visuals/Basics/BoxLayout.hpp
+        Visuals/Basics/Frame.hpp
+        Visuals/Basics/DockWidget.hpp
+        Visuals/Basics/GraphicsScene.hpp
+        Visuals/Basics/GraphicsItem.hpp
+        Visuals/Basics/GraphicsEllipseItem.hpp
+        Visuals/Basics/StackedLayout.hpp
+        Visuals/Basics/GraphicsView.hpp
+        Visuals/Custom/LeftToolBar.hpp
+        Visuals/Basics/ToolBar.hpp
+        Visuals/Custom/VectorEditorView.hpp
+        Visuals/Basics/StatusBar.hpp
+        Visuals/Custom/TopToolBar.hpp
+        Visuals/Custom/RightToolBar.hpp
+        Visuals/Basics/ToolButton.hpp
+        Visuals/Custom/ToolBarSeparator.hpp
+        Visuals/Custom/BottomToolBar.hpp
+        Visuals/Basics/HorizontalBoxLayout.hpp
+        Visuals/Basics/MainWindow.hpp
+        Visuals/Basics/VerticalBoxLayout.hpp
+        Visuals/Basics/Widget.hpp
+        Visuals/Basics/Label.hpp
+        Visuals/Basics/LineEdit.hpp
+        Visuals/Basics/ProgressBar.hpp
+        Visuals/General/Styles.hpp
+        Visuals/Custom/Label.hpp
+        ApplicationWindow.hpp ApplicationWindow.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET RasterEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
