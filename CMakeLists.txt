@@ -22,13 +22,14 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
-        Utilities/General.hpp Utilities/Compression.hpp
+        Core/Utilities/General.hpp Core/Utilities/Compression.hpp
         Core/Painting/IPaintingAction.hpp
         Core/Painting/BrushAction.hpp Core/Painting/BrushAction.cpp
         Core/Painting/PaintingToolType.hpp
         Core/Painting/PaintingToolRegisty.hpp
         Core/Painting/PaintingToolFactory.hpp
         Core/Painting/EraserAction.hpp Core/Painting/EraserAction.cpp
+        Utilities/AnonymousObservable.hpp Utilities/Bind.hpp Utilities/Bindable.hpp Utilities/Event.hpp Utilities/General.hpp Utilities/Handler.hpp Utilities/Observable.hpp Utilities/Parameter.hpp Utilities/Property.hpp Utilities/Resources.hpp Utilities/Slot.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET RasterEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

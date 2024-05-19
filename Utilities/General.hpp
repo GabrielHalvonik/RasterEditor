@@ -1,31 +1,74 @@
 #pragma once
 
-#include <memory>
+#include "Bind.hpp"
+#include "Slot.hpp"
+#include "Event.hpp"
+#include "Handler.hpp"
+#include "Property.hpp"
+#include "Parameter.hpp"
+#include "Observable.hpp"
 
-namespace Utilities::General {
+using std::function;
+using std::byte;
+using std::vector;
+using std::string;
+using std::tuple;
 
-    float distance(const QPoint& p1, const QPoint& p2) {
-        float dx = p2.x() - p1.x();
-        float dy = p2.y() - p1.y();
-        return std::sqrt(dx * dx + dy * dy);
+template <typename T>
+using property = Property<T>;
+
+template <typename T>
+using list = std::initializer_list<T>;
+
+#define parameters struct Parameters
+
+#define parametrized(owner) \
+    owner (Parameters&& Parameters) : owner() { \
+        for (int i = 0; i < sizeof(Parameters); ) { \
+            i += reinterpret_cast<IBindable*>(reinterpret_cast<std::byte*>(&Parameters) + i)->binds(this); \
+        } \
     }
 
-    QPoint interpolate(QPoint source, QPoint destination, float percentage) {
-        float x = (1 - percentage) * source.x() + percentage * destination.x();
-        float y = (1 - percentage) * source.y() + percentage * destination.y();
-        return QPoint(static_cast<int>(x), static_cast<int>(y));
-    }
+#define parametrize(item) \
+    template <typename T> \
+    using DeducedParameter = Parameter<T, item>; \
+    template <typename T> \
+    using DeducedHandler = Handler<T, item>; \
+    template <typename T> \
+    using DeducedSlot = Slot<T, item>; \
+    struct Parameters; \
+    parametrized(item) \
+    parameters
 
-    void getSubRectangle(u_int8_t* destination, const u_int8_t* source, int sourceWidth, int x, int y, int width, int height, int bytesPerPixel = 4) {
-        for (int row = 0; row < height; ++row) {
-            const u_int8_t* srcRowStart = source + ((y + row) * sourceWidth + x) * bytesPerPixel;
-            u_int8_t* destRowStart = destination + row * width * bytesPerPixel;
-            std::memcpy(destRowStart, srcRowStart, width * bytesPerPixel);
-        }
-    }
 
-    void getSubRectangle(u_int8_t* destination, const u_int8_t* origin, int originalWidth, const QRect& rect, int bytesPerPixel = 4) {
-        getSubRectangle(destination, origin, originalWidth, rect.x(), rect.y(), rect.width(), rect.height(), bytesPerPixel);
-    }
 
-}
+#define set_parameter using Parameter::Parameter;
+#define affect(value) set_parameter target function() { return &value; }
+#define parameter struct : DeducedParameter
+
+
+
+#define set_slot using Slot::Slot;
+#define subscribe(value) set_slot target function() { return &value; }
+#define connection struct : Slot
+
+
+
+#define set_handler using Handler::Handler;
+#define attach(value) set_handler target function() { return &value; }
+#define handler struct : DeducedHandler
+
+
+// #define field Field
+#define observable Observable
+
+
+
+#define bind(item) Bind { item }
+#define into += [this](void* source, auto value) -> std::optional
+
+#define delegate [this](void* source, auto value)
+
+
+#define setter .setter = [](auto& field, auto value)
+#define getter .getter = [](auto& field) -> auto
