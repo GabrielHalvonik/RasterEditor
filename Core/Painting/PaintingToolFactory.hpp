@@ -7,7 +7,7 @@
 
 struct PaintingToolFactory {
 
-    static std::tuple<PaintingToolType, IPaintingAction*> construct(PaintingToolType type) {
+    static std::tuple<PaintingToolType, PaintingActionBase*> construct(PaintingToolType type) {
         switch (type) {
             case PaintingToolType::Brush : { return { type, new BrushAction() }; } break;
             case PaintingToolType::Pen : { return { type, new PenAction() }; } break;

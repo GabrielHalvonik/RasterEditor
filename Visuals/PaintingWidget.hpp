@@ -32,6 +32,8 @@ protected:
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
     void mouseReleaseEvent(QMouseEvent*) override;
+    void enterEvent(QEnterEvent*) override;
+    void leaveEvent(QEvent*) override;
     void keyPressEvent(QKeyEvent*) override;
 
     void initializeGL() override;
@@ -50,7 +52,8 @@ private:
 
     const int bytesPerPixel = 4;
 
-    PaintingToolRegistry* paintingToolRegistry;
+    PaintingToolRegistry* paintingToolRegistry { };
+    QWidget* paintingToolPreviewWidget { };
 
     QSize pageSize { };
 
@@ -67,4 +70,5 @@ private:
     std::stack<Delta> redoStack { };
 
     Snapshot bitmapSnapshot { };
+
 };

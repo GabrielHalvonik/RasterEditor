@@ -1,5 +1,7 @@
 #include "PenAction.hpp"
 
+#include <QPainter>
+
 PenAction::PenAction() {
 
 }
@@ -9,5 +11,6 @@ PenAction::~PenAction() {
 }
 
 QRect PenAction::perform(QPainter* painter, const QPoint& point) {
-    return { point.x(), point.y(), 0, 0 };
+    painter->drawPoint(point.x(), point.y());
+    return { point.x(), point.y(), 1, 1 };
 }

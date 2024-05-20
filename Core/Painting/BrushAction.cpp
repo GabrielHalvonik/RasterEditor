@@ -1,10 +1,17 @@
 #include "BrushAction.hpp"
 
+#include <QWidget>
 #include <QPainter>
+#include <QPaintEvent>
+#include <QApplication>
 
-BrushAction::BrushAction() : brush(new QPixmap(50, 50)) {
+#include "PaintingToolPreviewWidgets.hpp"
+
+BrushAction::BrushAction() : brush(new QPixmap { 50, 50 }) {
     brush->fill(Qt::transparent);
     brush->load(":/resources/brushes/brush.png");
+
+    PaintingActionBase::setPreviewWidget(new BrushPreviewWidget(brush));
 }
 
 BrushAction::~BrushAction() {

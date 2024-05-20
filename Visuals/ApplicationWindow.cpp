@@ -47,6 +47,7 @@ ApplicationWindow::ApplicationWindow() :
 
     QMainWindow::setCentralWidget(centralWidget);
     paintingWidget->setFocus();
+    paintingWidget->setMouseTracking(true);
 
     paintingToolBar->setParent(centralWidget);
 

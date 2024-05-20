@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IPaintingAction.hpp"
+#include "PaintingActionBase.hpp"
 
 #include <QSize>
 
-struct EraserAction : IPaintingAction  {
+struct EraserAction : PaintingActionBase  {
 
     EraserAction();
     ~EraserAction();
@@ -12,5 +12,5 @@ struct EraserAction : IPaintingAction  {
     QRect perform(QPainter*, const QPoint&) override;
 
 private:
-    QSize eraserRadius { };
+    QSize eraserSize { };
 };

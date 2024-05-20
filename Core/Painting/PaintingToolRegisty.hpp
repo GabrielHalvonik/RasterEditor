@@ -4,14 +4,14 @@
 #include <unordered_map>
 #include <initializer_list>
 
-#include "IPaintingAction.hpp"
+#include "PaintingActionBase.hpp"
 #include "PaintingToolType.hpp"
 
 struct PaintingToolRegistry {
 
     PaintingToolRegistry() { }
 
-    PaintingToolRegistry(std::initializer_list<std::tuple<PaintingToolType, IPaintingAction*>>&& actions) {
+    PaintingToolRegistry(std::initializer_list<std::tuple<PaintingToolType, PaintingActionBase*>>&& actions) {
         registerPaintingActions(std::move(actions));
     }
 
@@ -22,7 +22,7 @@ struct PaintingToolRegistry {
         }
     }
 
-    void registerPaintingActions(std::initializer_list<std::tuple<PaintingToolType, IPaintingAction*>>&& actions) {
+    void registerPaintingActions(std::initializer_list<std::tuple<PaintingToolType, PaintingActionBase*>>&& actions) {
         for (auto& [type, action] : actions) {
             registeredToolTypes.push_back(type);
             registry.emplace(type, action);
@@ -34,7 +34,7 @@ struct PaintingToolRegistry {
     }
 
 
-    IPaintingAction* getCurrentTool() const {
+    PaintingActionBase* getCurrentTool() const {
         return currentTool;
     }
 
@@ -43,7 +43,7 @@ struct PaintingToolRegistry {
     }
 
 private:
-    IPaintingAction* currentTool { };
+    PaintingActionBase* currentTool { };
     std::vector<PaintingToolType> registeredToolTypes { };
-    std::unordered_map<PaintingToolType, IPaintingAction*> registry { };
+    std::unordered_map<PaintingToolType, PaintingActionBase*> registry { };
 };

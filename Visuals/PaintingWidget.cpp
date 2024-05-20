@@ -53,6 +53,20 @@ void PaintingWidget::mousePressEvent(QMouseEvent* event) {
 }
 
 void PaintingWidget::mouseMoveEvent(QMouseEvent* event) {
+    if (paintingToolRegistry->getCurrentTool() == nullptr) return;
+
+    if (paintingToolPreviewWidget = paintingToolRegistry->getCurrentTool()->getPreviewWidget(); paintingToolPreviewWidget != nullptr) {
+        if (paintingToolPreviewWidget->parent() != this) {
+            paintingToolPreviewWidget->setParent(this);
+        }
+        if (!paintingToolPreviewWidget->isVisible()) {
+            paintingToolPreviewWidget->show();
+        }
+        if (QWidget::rect().contains(event->pos())) {   // todo: not working correctly when pressed and outside of canvas bounds
+            paintingToolPreviewWidget->move(event->pos().x() - paintingToolPreviewWidget->width() / 2, event->pos().y() - paintingToolPreviewWidget->height() / 2);
+        }
+    }
+
     if (isDrawing) {
         applyPaintingAction(event->pos());
         previousPoint = event->pos();
@@ -73,6 +87,22 @@ void PaintingWidget::mouseReleaseEvent(QMouseEvent* event) {
         qInfo() << optimized << " vs " << unoptimized << " ... ratio(" << ((double)optimized / unoptimized) << ")";
     }
 
+}
+
+void PaintingWidget::enterEvent(QEnterEvent* event) {
+    qInfo() << "enter";
+    if (paintingToolPreviewWidget = paintingToolRegistry->getCurrentTool()->getPreviewWidget(); paintingToolPreviewWidget != nullptr) {
+        paintingToolPreviewWidget->setParent(this);
+        paintingToolPreviewWidget->show();
+    }
+}
+
+void PaintingWidget::leaveEvent(QEvent* event) {
+    qInfo() << "leave";
+    if (paintingToolPreviewWidget = paintingToolRegistry->getCurrentTool()->getPreviewWidget(); paintingToolPreviewWidget != nullptr) {
+        paintingToolPreviewWidget->hide();
+        paintingToolPreviewWidget->setParent(nullptr);
+    }
 }
 
 void PaintingWidget::keyPressEvent(QKeyEvent* event) {

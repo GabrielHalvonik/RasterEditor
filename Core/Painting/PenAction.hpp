@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IPaintingAction.hpp"
+#include "PaintingActionBase.hpp"
 
 class QPixmap;
 
-struct PenAction : IPaintingAction {
+struct PenAction : PaintingActionBase {
 
     PenAction();
     ~PenAction();
