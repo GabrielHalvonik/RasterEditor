@@ -10,7 +10,6 @@ struct IPaintingAction {
 
     virtual ~IPaintingAction() {}
 
-    virtual PaintingToolType toolType() const = 0;
     virtual void perform(QPainter*, const QPoint&) = 0;
 
 };

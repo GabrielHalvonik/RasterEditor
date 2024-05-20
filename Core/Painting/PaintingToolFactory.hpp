@@ -3,14 +3,16 @@
 #include "IPaintingAction.hpp"
 #include "BrushAction.hpp"
 #include "EraserAction.hpp"
+#include "PenAction.hpp"
 
 struct PaintingToolFactory {
 
-    static IPaintingAction* construct(PaintingToolType type) {
+    static std::tuple<PaintingToolType, IPaintingAction*> construct(PaintingToolType type) {
         switch (type) {
-            case PaintingToolType::Brush : { return new BrushAction(); } break;
-            case PaintingToolType::Eraser : { return new EraserAction(); } break;
-            default: return nullptr;
+            case PaintingToolType::Brush : { return { type, new BrushAction() }; } break;
+            case PaintingToolType::Pen : { return { type, new PenAction() }; } break;
+            case PaintingToolType::Eraser : { return { type, new EraserAction() }; } break;
+            default: return { PaintingToolType::None, { } };
         }
     }
 

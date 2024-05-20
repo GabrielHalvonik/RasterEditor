@@ -9,22 +9,8 @@ struct PaintingToolRegistry {
 
     PaintingToolRegistry() { }
 
-    PaintingToolRegistry(std::initializer_list<IPaintingAction*>&& actions) {
+    PaintingToolRegistry(std::initializer_list<std::tuple<PaintingToolType, IPaintingAction*>>&& actions) {
         registerPaintingActions(std::move(actions));
-    }
-
-    void registerPaintingActions(std::initializer_list<IPaintingAction*>&& actions) {
-        for (IPaintingAction* action : actions) {
-            registry.emplace(action->toolType(), action);
-        }
-    }
-
-    void setCurrentToolType(PaintingToolType toolType) {
-        currentTool = registry[toolType];
-    }
-
-    IPaintingAction* getCurrentTool() const {
-        return currentTool;
     }
 
     ~PaintingToolRegistry() {
@@ -34,7 +20,28 @@ struct PaintingToolRegistry {
         }
     }
 
+    void registerPaintingActions(std::initializer_list<std::tuple<PaintingToolType, IPaintingAction*>>&& actions) {
+        for (auto& [type, action] : actions) {
+            registeredToolTypes.push_back(type);
+            registry.emplace(type, action);
+        }
+    }
+
+    void setCurrentToolType(PaintingToolType toolType) {
+        currentTool = registry[toolType];
+    }
+
+
+    IPaintingAction* getCurrentTool() const {
+        return currentTool;
+    }
+
+    inline std::vector<PaintingToolType> getRegisteredPaintingToolTypes() const {
+        return registeredToolTypes;
+    }
+
 private:
     IPaintingAction* currentTool { };
+    std::vector<PaintingToolType> registeredToolTypes { };
     std::map<PaintingToolType, IPaintingAction*> registry { };
 };

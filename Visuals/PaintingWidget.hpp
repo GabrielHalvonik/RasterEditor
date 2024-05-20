@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <stack>
 #include <QWidget>
 #include <QPixmap>
@@ -8,24 +9,24 @@
 #include <QOpenGLFunctions>
 
 class QPainter;
+class BrushAction;
+class PaintingToolRegistry;
 
 struct Delta {
     QRect region { };
-    std::vector<uchar> data { };
-    // uchar* data { };
+    std::vector<u_int8_t> data { };
+    // u_int8_t* data { };
 };
 
 struct Snapshot {
     QRect region { };
-    uchar* data { };
+    u_int8_t* data { };
 };
 
-struct Widget : public QOpenGLWidget, protected QOpenGLFunctions {
+struct PaintingWidget : public QOpenGLWidget, protected QOpenGLFunctions {
 
-    Widget(QWidget* parent = nullptr);
-    ~Widget();
-
-    static const int PageSize = 512;
+    PaintingWidget(PaintingToolRegistry*, const QSize& pageSize = { 512, 512 }, QWidget* parent = nullptr);
+    ~PaintingWidget();
 
 protected:
     void mousePressEvent(QMouseEvent*) override;
@@ -37,21 +38,23 @@ protected:
     void resizeGL(int, int) override;
     void paintGL() override;
 
-    Snapshot getImageSnapshot(uchar*, int, const QRect&);
-    Delta getImageCompressedDelta(uchar*, int, const QRect&);
-
-    void getSubRectangle(uchar*, const uchar*, int, int, int, int, int);
-    void getSubRectangle(uchar*, const uchar*, int, const QRect&);
+    Snapshot getImageSnapshot(u_int8_t*, int, const QRect&);
+    Delta getImageCompressedDelta(u_int8_t*, int, const QRect&);
 
 private:
-    void drawBrushStroke(const QPoint&);
+    void applyPaintingAction(const QPoint&);
     QPoint interpolateSpline(const std::vector<QPoint>&, float);
     void pushIntoUndoStack(const Delta&);
 
 private:
+
     const int bytesPerPixel = 4;
 
-    QImage image { PageSize, PageSize, QImage::Format::Format_ARGB32 };
+    PaintingToolRegistry* paintingToolRegistry;
+
+    QSize pageSize { };
+
+    QImage image { pageSize.width(), pageSize.height(), QImage::Format::Format_ARGB32 };
     QPixmap brush { 50, 50 };
     QPixmap erase { 50, 50 };
 
@@ -67,9 +70,3 @@ private:
 
     Snapshot bitmapSnapshot { };
 };
-
-
-
-
-
-

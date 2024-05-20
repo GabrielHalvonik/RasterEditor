@@ -2,12 +2,15 @@
 
 #include "IPaintingAction.hpp"
 
+#include <QSize>
+
 struct EraserAction : IPaintingAction  {
 
     EraserAction();
     ~EraserAction();
 
-    PaintingToolType toolType() const override { return PaintingToolType::Eraser; }
     void perform(QPainter*, const QPoint&) override;
 
+private:
+    QSize eraserSize { };
 };

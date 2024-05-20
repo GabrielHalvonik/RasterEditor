@@ -1,101 +1,29 @@
-QLineEdit {
-    border-radius: 4px;
-}
-
-Visuals--Basics--Label {
-    border-radius: 4px;
-    background: blue;
-}
-
-#Label {
-    border-radius: 4px;
-    background: blue;
-}
-
-#Label[TextLength="Empty"] {
-    background-color: gray;
-}
-
-#Label[TextLength="Fine"] {
-    background-color: green;
-}
-
-#Label[TextLength="Long"] {
-    background-color: red;
-}
-
-QDockWidget {
-    margin-top: 10px;
-    background-color: red;
-}
-
-QStatusBar {
-    border-top: 1px solid rgba(80, 80, 80, 255);
-    background-color: rgba(50, 50, 55, 255);
-}
-
-#TopToolBar {
-    border-bottom: 1px solid rgba(80, 80, 80, 255);
-    background-color: rgba(50, 50, 55, 255);
-}
-
-#RightToolBar {
-    border-left: 1px solid rgba(80, 80, 80, 255);
-    background-color: rgba(50, 50, 55, 255);
-}
-
-#LeftToolBar {
-    border: 1px solid rgba(80, 80, 80, 255);
+#PaintingToolBar {
+    spacing: 0px;
     border-radius: 6px;
-    background-color: rgba(50, 50, 55, 255);
+    background-color: rgb(80, 80, 105);
 }
 
-#BottomToolBar {
-    border: 1px solid rgba(80, 80, 80, 255);
-    border-radius: 6px;
-    background-color: rgba(50, 50, 55, 255);
+#PaintingToolBar QToolButton {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
-#LeftToolBar QWidget { background-color: transparent; }
-#LeftToolBar QScrollArea { background-color: rgba(50, 50, 55, 255); }
-
-QScrollArea { border: 0px solid transparent; background-color: rgba(60, 60, 64, 255); }
-QScrollArea QWidget { margin: 0px; padding: 0px; border: 0px solid transparent; background-color: rgba(60, 60, 65, 255); }
-
-#ScrollableTabBar[Fulfillment="Empty"] {
-    max-width: 0px;
+#PaintingToolBar QToolButton:checked {
+    background-color: rgb(100, 100, 125);
 }
 
-QTabBar::tab {
-    width: 120px;
-    height: 20px;
-    border-right: 1px inset rgba(5, 5, 5, 255);
-
-margin-left: -1px;
-    border-left: 1px inset rgba(5, 5, 5, 255);
-    color: rgb(140, 140, 140);
-    background-color: rgba(60, 60, 65, 255);
+#PaintingToolBar QToolButton[position="first"] {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
-QTabBar::tab:selected {
-    background-color: rgb(84, 82, 88);
-    color: rgb(180, 180, 180);
+#PaintingToolBar QToolButton[position="last"] {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
-QTabBar::tab:pressed {
-    background-color: rgb(66, 66, 70);
-}
-
-#TabBarAddTabButton {
-    color: rgb(160, 160, 160);
-}
-
-#TabBarAddTabButton:hover {
-    background-color: rgb(66, 66, 70);
-    color: rgb(180, 180, 180);
-}
-
-#TabBarAddTabButton:pressed {
-    background-color: rgb(84, 82, 88);
-    color: rgb(180, 180, 180);
+QProgressBar {
+    max-height: 16px;
 }

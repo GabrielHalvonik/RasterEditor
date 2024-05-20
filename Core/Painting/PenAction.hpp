@@ -4,14 +4,11 @@
 
 class QPixmap;
 
-struct BrushAction : IPaintingAction {
+struct PenAction : IPaintingAction {
 
-    BrushAction();
-    ~BrushAction();
+    PenAction();
+    ~PenAction();
 
     void perform(QPainter*, const QPoint&) override;
 
-private:
-    QPixmap* brush { };
 };
-
