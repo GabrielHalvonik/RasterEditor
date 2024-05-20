@@ -2,8 +2,6 @@
 
 #include <QPoint>
 
-#include "PaintingToolType.hpp"
-
 class QPainter;
 
 struct IPaintingAction {

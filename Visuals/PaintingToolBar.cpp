@@ -3,7 +3,6 @@
 #include <QButtonGroup>
 #include <QToolButton>
 
-#include "../Utilities/Resources.hpp"
 #include "Utilities/PaintingToolIconFactory.hpp"
 #include "../Core/Painting/PaintingToolRegisty.hpp"
 

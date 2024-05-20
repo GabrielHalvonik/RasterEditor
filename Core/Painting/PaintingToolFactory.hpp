@@ -1,9 +1,9 @@
 #pragma once
 
-#include "IPaintingAction.hpp"
+#include "PenAction.hpp"
 #include "BrushAction.hpp"
 #include "EraserAction.hpp"
-#include "PenAction.hpp"
+#include "PaintingToolType.hpp"
 
 struct PaintingToolFactory {
 

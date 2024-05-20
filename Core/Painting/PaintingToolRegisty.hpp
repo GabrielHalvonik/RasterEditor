@@ -1,9 +1,11 @@
 #pragma once
 
-#include <map>
+#include <vector>
+#include <unordered_map>
 #include <initializer_list>
 
 #include "IPaintingAction.hpp"
+#include "PaintingToolType.hpp"
 
 struct PaintingToolRegistry {
 

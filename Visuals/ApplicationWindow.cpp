@@ -19,7 +19,6 @@
 #include "PaintingWidget.hpp"
 #include "PaintingToolBar.hpp"
 
-#include "../Utilities/Resources.hpp"
 #include "../Core/Painting/PaintingToolRegisty.hpp"
 #include "../Core/Painting/PaintingToolFactory.hpp"
 

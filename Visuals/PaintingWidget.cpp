@@ -49,9 +49,9 @@ void PaintingWidget::paintGL() {
 
 void PaintingWidget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        if (paintingToolRegistry->getCurrentTool() == nullptr) { qInfo() << "rtrn"; return; }
+        if (paintingToolRegistry->getCurrentTool() == nullptr) return;
+
         isDrawing = true;
-        // points.push_back(event->pos());
         affectedRegion = QRect(event->pos(), event->pos());
 
         bitmapSnapshot = getImageSnapshot(image.bits(), image.width(), image.rect());
