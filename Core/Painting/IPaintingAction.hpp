@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QRect>
 #include <QPoint>
 
 class QPainter;
@@ -8,6 +9,6 @@ struct IPaintingAction {
 
     virtual ~IPaintingAction() {}
 
-    virtual void perform(QPainter*, const QPoint&) = 0;
+    virtual QRect perform(QPainter*, const QPoint&) = 0;
 
 };

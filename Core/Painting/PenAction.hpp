@@ -9,6 +9,6 @@ struct PenAction : IPaintingAction {
     PenAction();
     ~PenAction();
 
-    void perform(QPainter*, const QPoint&) override;
+    QRect perform(QPainter*, const QPoint&) override;
 
 };

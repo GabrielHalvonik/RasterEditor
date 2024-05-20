@@ -3,15 +3,17 @@
 #include <QPainter>
 
 EraserAction::EraserAction() {
-    eraserSize = { 25, 25 };
+    eraserRadius = { 25, 25 };
 }
 
 EraserAction::~EraserAction() {
 
 }
 
-void EraserAction::perform(QPainter* painter, const QPoint& point) {
-    painter->setPen(QColor::fromRgba(0xFFFFFFFF));
+QRect EraserAction::perform(QPainter* painter, const QPoint& point) {
+    painter->setPen(Qt::GlobalColor::transparent);
     painter->setBrush(QBrush(QColor::fromRgba(0xFFFFFFFF)));
-    painter->drawEllipse(point, eraserSize.width(), eraserSize.height());
+    painter->drawEllipse(point, eraserRadius.width(), eraserRadius.height());
+
+    return { point.x() - eraserRadius.width(), point.y() - eraserRadius.height(), eraserRadius.height() * 2, eraserRadius.height() * 2 };
 }

@@ -12,7 +12,8 @@ BrushAction::~BrushAction() {
     brush = nullptr;
 }
 
-void BrushAction::perform(QPainter* painter, const QPoint& point) {
+QRect BrushAction::perform(QPainter* painter, const QPoint& point) {
     painter->drawPixmap(point.x() - brush->width() / 2, point.y() - brush->height() / 2, *brush);
-    // painter->drawPixmap(brush);
+
+    return { point.x() - brush->width() / 2, point.y() - brush->height() / 2, brush->width(), brush->height() };
 }

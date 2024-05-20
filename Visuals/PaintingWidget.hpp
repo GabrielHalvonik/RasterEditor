@@ -55,8 +55,6 @@ private:
     QSize pageSize { };
 
     QImage image { pageSize.width(), pageSize.height(), QImage::Format::Format_ARGB32 };
-    QPixmap brush { 50, 50 };
-    QPixmap erase { 50, 50 };
 
     bool isErase { false };
     bool isDrawing { false };

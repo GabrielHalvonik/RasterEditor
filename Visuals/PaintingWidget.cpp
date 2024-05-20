@@ -19,15 +19,6 @@ PaintingWidget::PaintingWidget(PaintingToolRegistry* registry, const QSize& page
     QOpenGLWidget::setFixedSize(pageSize);
 
     image.fill(Qt::white);
-    brush.fill(Qt::transparent);
-
-    brush.load(":/resources/brushes/brush.png");
-
-    erase.fill(Qt::transparent);
-    QPainter erasePainter { &erase };
-    erasePainter.setPen(QColor::fromRgba(0xFFFFFFFF));
-    erasePainter.setBrush(QBrush(QColor::fromRgba(0xFFFFFFFF)));
-    erasePainter.drawEllipse(0, 0, 50, 50);
 }
 
 PaintingWidget::~PaintingWidget() { }
@@ -131,10 +122,8 @@ void PaintingWidget::applyPaintingAction(const QPoint& point) {
     QPainter imagePainter(&image);
 
     if (!previousPoint.has_value()) {
-        paintingToolRegistry->getCurrentTool()->perform(&imagePainter, point);
-        // imagePainter.drawPixmap(point.x() - brush.width() / 2, point.y() - brush.height() / 2, isErase ? erase : brush);
-        QRect currentRect = QRect(point.x() - brush.width() / 2, point.y() - brush.height() / 2, brush.width(), brush.height());
-        affectedRegion = affectedRegion.united(currentRect);
+        auto affectedRect = paintingToolRegistry->getCurrentTool()->perform(&imagePainter, point);
+        affectedRegion = affectedRegion.united(affectedRect);
     } else {
         const float segmentLength = 10.0f;
         float dist = Utilities::General::distance(previousPoint.value(), point);
@@ -142,10 +131,8 @@ void PaintingWidget::applyPaintingAction(const QPoint& point) {
         for (int j = 0; j <= segments; ++j) {
             float t = static_cast<float>(j) / segments;
             QPoint p = Utilities::General::interpolate(previousPoint.value(), point, t);
-            paintingToolRegistry->getCurrentTool()->perform(&imagePainter, p);
-            // imagePainter.drawPixmap(p.x() - brush.width() / 2, p.y() - brush.height() / 2, isErase ? erase : brush);
-            QRect currentRect = QRect(p.x() - brush.width() / 2, p.y() - brush.height() / 2, brush.width(), brush.height());
-            affectedRegion = affectedRegion.united(currentRect);
+            auto affectedRect = paintingToolRegistry->getCurrentTool()->perform(&imagePainter, p);
+            affectedRegion = affectedRegion.united(affectedRect);
         }
     }
 }
