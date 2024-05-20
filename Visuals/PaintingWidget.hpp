@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <cstdint>
 #include <stack>
 #include <QWidget>
 #include <QPixmap>
@@ -14,13 +14,13 @@ class PaintingToolRegistry;
 
 struct Delta {
     QRect region { };
-    std::vector<u_int8_t> data { };
-    // u_int8_t* data { };
+    std::vector<uint8_t> data { };
+    // uint8_t* data { };
 };
 
 struct Snapshot {
     QRect region { };
-    u_int8_t* data { };
+    uint8_t* data { };
 };
 
 struct PaintingWidget : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -38,8 +38,8 @@ protected:
     void resizeGL(int, int) override;
     void paintGL() override;
 
-    Snapshot getImageSnapshot(u_int8_t*, int, const QRect&);
-    Delta getImageCompressedDelta(u_int8_t*, int, const QRect&);
+    Snapshot getImageSnapshot(uint8_t*, int, const QRect&);
+    Delta getImageCompressedDelta(uint8_t*, int, const QRect&);
 
 private:
     void applyPaintingAction(const QPoint&);

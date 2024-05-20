@@ -1,6 +1,7 @@
 #pragma once
 
-#include <memory>
+#include <QRect>
+#include <QPoint>
 
 namespace Utilities::General {
 
@@ -16,15 +17,15 @@ namespace Utilities::General {
         return QPoint(static_cast<int>(x), static_cast<int>(y));
     }
 
-    void getSubRectangle(u_int8_t* destination, const u_int8_t* source, int sourceWidth, int x, int y, int width, int height, int bytesPerPixel = 4) {
+    void getSubRectangle(uint8_t* destination, const uint8_t* source, int sourceWidth, int x, int y, int width, int height, int bytesPerPixel = 4) {
         for (int row = 0; row < height; ++row) {
-            const u_int8_t* srcRowStart = source + ((y + row) * sourceWidth + x) * bytesPerPixel;
-            u_int8_t* destRowStart = destination + row * width * bytesPerPixel;
+            const uint8_t* srcRowStart = source + ((y + row) * sourceWidth + x) * bytesPerPixel;
+            uint8_t* destRowStart = destination + row * width * bytesPerPixel;
             std::memcpy(destRowStart, srcRowStart, width * bytesPerPixel);
         }
     }
 
-    void getSubRectangle(u_int8_t* destination, const u_int8_t* origin, int originalWidth, const QRect& rect, int bytesPerPixel = 4) {
+    void getSubRectangle(uint8_t* destination, const uint8_t* origin, int originalWidth, const QRect& rect, int bytesPerPixel = 4) {
         getSubRectangle(destination, origin, originalWidth, rect.x(), rect.y(), rect.width(), rect.height(), bytesPerPixel);
     }
 
