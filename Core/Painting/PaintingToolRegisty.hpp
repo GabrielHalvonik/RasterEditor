@@ -45,5 +45,5 @@ struct PaintingToolRegistry {
 private:
     IPaintingAction* currentTool { };
     std::vector<PaintingToolType> registeredToolTypes { };
-    std::map<PaintingToolType, IPaintingAction*> registry { };
+    std::unordered_map<PaintingToolType, IPaintingAction*> registry { };
 };

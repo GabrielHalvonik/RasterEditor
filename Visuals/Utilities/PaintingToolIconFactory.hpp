@@ -2,6 +2,7 @@
 
 #include <QIcon>
 
+#include "../../Utilities/Resources.hpp"
 #include "../../Core/Painting/PaintingToolType.hpp"
 
 struct PaintingToolIconFactory {
