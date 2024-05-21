@@ -8,6 +8,7 @@
 #include <QOpenGLFunctions>
 
 #include "../Core/Utilities/General.hpp"
+#include "../Core/Managers/UndoRedoManager.hpp"
 
 class QPainter;
 class BrushAction;
@@ -38,7 +39,6 @@ protected:
 private:
     void applyPaintingAction(const QPoint&);
     QPoint interpolateSpline(const std::vector<QPoint>&, float);
-    void pushIntoUndoStack(const Delta&);
 
 private:
 
@@ -58,9 +58,8 @@ private:
 
     QRect affectedRegion { };
 
-    std::stack<Delta> undoStack { };
-    std::stack<Delta> redoStack { };
-
     Snapshot bitmapSnapshot { };
+
+    UndoRedoManager undoRedoManager { };
 
 };

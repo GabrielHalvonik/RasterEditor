@@ -21,22 +21,25 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         resources.qrc
+        Utilities/Resources.hpp
         Core/Utilities/General.hpp
         Core/Utilities/Compression.hpp
         Core/Painting/PaintingToolType.hpp
         Core/Painting/PaintingToolRegisty.hpp
         Core/Painting/PaintingToolFactory.hpp
-        Core/Painting/PaintingActionBase.hpp Core/Painting/PaintingActionBase.cpp
-        Core/Painting/BrushAction.hpp Core/Painting/BrushAction.cpp
         Core/Painting/PenAction.hpp Core/Painting/PenAction.cpp
+        Core/Painting/BrushAction.hpp Core/Painting/BrushAction.cpp
         Core/Painting/EraserAction.hpp Core/Painting/EraserAction.cpp
-        Visuals/PaintingWidget.cpp Visuals/PaintingWidget.hpp
-        Visuals/ApplicationWindow.hpp Visuals/ApplicationWindow.cpp
-        Visuals/CentralWidget.hpp Visuals/CentralWidget.cpp
-        Visuals/PaintingToolBar.hpp Visuals/PaintingToolBar.cpp
-        Visuals/Utilities/PaintingToolIconFactory.hpp
-        Utilities/Resources.hpp
+        Core/Managers/UndoRedoManager.hpp Core/Managers/UndoRedoManager.cpp
+        Core/Managers/WorkspaceManager.hpp Core/Managers/WorkspaceManager.cpp
+        Core/Painting/PaintingActionBase.hpp Core/Painting/PaintingActionBase.cpp
+        Core/Managers/WorkspaceActionManager.hpp Core/Managers/WorkspaceActionManager.cpp
         Core/Painting/PaintingToolPreviewWidgets.hpp Core/Painting/PaintingToolPreviewWidgets.cpp
+        Visuals/Utilities/PaintingToolIconFactory.hpp
+        Visuals/CentralWidget.hpp Visuals/CentralWidget.cpp
+        Visuals/PaintingWidget.cpp Visuals/PaintingWidget.hpp
+        Visuals/PaintingToolBar.hpp Visuals/PaintingToolBar.cpp
+        Visuals/ApplicationWindow.hpp Visuals/ApplicationWindow.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET RasterEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

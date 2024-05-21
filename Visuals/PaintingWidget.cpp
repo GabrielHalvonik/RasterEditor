@@ -82,12 +82,13 @@ void PaintingWidget::mouseReleaseEvent(QMouseEvent* event) {
         previousPoint = { };
 
         auto region = Utilities::General::clipRegionToWidgetBounds(affectedRegion.normalized(), QWidget::size());
+        auto delta = Utilities::General::getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), region);
+        undoRedoManager.pushUndo(delta);
 
-        pushIntoUndoStack(Utilities::General::getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), region));
         delete[] bitmapSnapshot.data; bitmapSnapshot.data = nullptr;   // todo: probably recycle outer area for next time
-        auto optimized = undoStack.top().data.size();
-        auto unoptimized = pageSize.width() * pageSize.height() * bytesPerPixel;
-        qInfo() << optimized << " vs " << unoptimized << " ... ratio(" << ((double)optimized / unoptimized) << ")";
+        // auto optimized = undoStack.top().data.size();
+        // auto unoptimized = pageSize.width() * pageSize.height() * bytesPerPixel;
+        // qInfo() << optimized << " vs " << unoptimized << " ... ratio(" << ((double)optimized / unoptimized) << ")";
     }
 
 }
@@ -108,36 +109,11 @@ void PaintingWidget::leaveEvent(QEvent* event) {
 
 void PaintingWidget::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Z && (event->modifiers() | Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()) {
-        if (!redoStack.empty()) {
-            Delta delta = redoStack.top();
-            redoStack.pop();
-
-            undoStack.push(Utilities::General::getImageCompressedDelta(image.bits(), image.width(), delta.region));
-
-            auto size = delta.region.width() * delta.region.height() * bytesPerPixel;
-            uint8_t* decompressed = new uint8_t[delta.region.width() * delta.region.height() * bytesPerPixel];
-            Utilities::Compression::decompressRunLengthEncoding(delta.data, decompressed, size);
-
-            QPainter painter(&image);
-            painter.drawImage(delta.region, QImage(decompressed, delta.region.width(), delta.region.height(), QImage::Format_ARGB32));
-            delete[] decompressed; decompressed = nullptr;
+        if (undoRedoManager.redo(&image)) {
             update();
         }
     } else if (event->key() == Qt::Key_Z && event->modifiers() & Qt::ControlModifier) {
-        if (!undoStack.empty()) {
-            Delta delta = undoStack.top();
-            undoStack.pop();
-
-            redoStack.push(Utilities::General::getImageCompressedDelta(image.bits(), image.width(), delta.region));
-
-            auto size = delta.region.width() * delta.region.height() * bytesPerPixel;
-            uint8_t* decompressed = new uint8_t[delta.region.width() * delta.region.height() * bytesPerPixel];
-            Utilities::Compression::decompressRunLengthEncoding(delta.data, decompressed, size);
-
-            QPainter painter(&image);
-            painter.drawImage(delta.region, QImage(decompressed, delta.region.width(), delta.region.height(), QImage::Format_ARGB32));
-                    /* visualize */   painter.drawRect(delta.region.x(), delta.region.y(), delta.region.width() - 1, delta.region.height() - 1);
-            delete[] decompressed; decompressed = nullptr;
+        if (undoRedoManager.undo(&image)) {
             update();
         }
     } else if (event->key() == Qt::Key_Tab) {
@@ -165,13 +141,6 @@ void PaintingWidget::applyPaintingAction(const QPoint& point) {
             auto affectedRect = paintingToolRegistry->getCurrentTool()->perform(&imagePainter, p);
             affectedRegion = affectedRegion.united(affectedRect);
         }
-    }
-}
-
-void PaintingWidget::pushIntoUndoStack(const Delta& delta) {
-    undoStack.push(delta);
-    while (!redoStack.empty()) {
-        redoStack.pop();
     }
 }
 
