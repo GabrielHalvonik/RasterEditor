@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QRect>
+#include <QSize>
 #include <QPoint>
+#include <algorithm>
 
 namespace Utilities::General {
 
@@ -27,6 +29,23 @@ namespace Utilities::General {
 
     void getSubRectangle(uint8_t* destination, const uint8_t* origin, int originalWidth, const QRect& rect, int bytesPerPixel = 4) {
         getSubRectangle(destination, origin, originalWidth, rect.x(), rect.y(), rect.width(), rect.height(), bytesPerPixel);
+    }
+
+    QRect clipRegionToWidgetBounds(QRect rect, const QSize& size) {
+        if (rect.x() < 0) {
+            rect.setX(0);
+            rect.setWidth(rect.width() + rect.x());
+        } else if ((rect.x() + rect.width()) > size.width()) {
+            rect.setWidth(size.width() - rect.x());
+        }
+        if (rect.y() < 0) {
+            rect.setY(0);
+            rect.setHeight(rect.height() + rect.y());
+        } else if ((rect.y() + rect.height()) > size.height()) {
+            rect.setHeight(size.height() - rect.y());
+        }
+
+        return rect;
     }
 
 }

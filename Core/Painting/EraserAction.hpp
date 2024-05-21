@@ -11,6 +11,4 @@ struct EraserAction : PaintingActionBase  {
 
     QRect perform(QPainter*, const QPoint&) override;
 
-private:
-    QSize eraserSize { };
 };

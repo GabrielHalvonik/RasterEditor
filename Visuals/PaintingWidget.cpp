@@ -76,11 +76,15 @@ void PaintingWidget::mouseMoveEvent(QMouseEvent* event) {
 
 void PaintingWidget::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
+        if (paintingToolRegistry->getCurrentTool() == nullptr) return;
+
         isDrawing = false;
 
         previousPoint = { };
 
-        pushIntoUndoStack(getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), affectedRegion.normalized()));
+        auto region = Utilities::General::clipRegionToWidgetBounds(affectedRegion.normalized(), QWidget::size());
+
+        pushIntoUndoStack(getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), region));
         delete[] bitmapSnapshot.data; bitmapSnapshot.data = nullptr;   // todo: probably recycle outer area for next time
         auto optimized = undoStack.top().data.size();
         auto unoptimized = pageSize.width() * pageSize.height() * bytesPerPixel;
@@ -178,7 +182,8 @@ Snapshot PaintingWidget::getImageSnapshot(uint8_t* source, int sourceWidth, cons
     auto snapshot = Snapshot();
     snapshot.region = region;
     snapshot.data = new uint8_t[region.width() * region.height() * bytesPerPixel];
-    Utilities::General::getSubRectangle(snapshot.data, source, sourceWidth, region);
+    std::memcpy(snapshot.data, image.bits(), region.width() * region.height() * bytesPerPixel);         // naive snapshot
+    // Utilities::General::getSubRectangle(snapshot.data, source, sourceWidth, region);
     return snapshot;
 }
 
