@@ -14,6 +14,10 @@
 #include <QFormLayout>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QMenuBar>
+#include <QMenu>
+#include <QDialog>
+#include <QLabel>
 
 #include "CentralWidget.hpp"
 #include "PaintingWidget.hpp"
@@ -97,6 +101,14 @@ ApplicationWindow::ApplicationWindow() :
         QMainWindow::addDockWidget(Qt::DockWidgetArea::RightDockWidgetArea, dock, Qt::Orientation::Vertical);
     }
 
+    auto aboutMenu = new QMenu("About", ApplicationWindow::menuBar());
+    auto creditAction = new QAction("Credit", aboutMenu);
+
+    QObject::connect(creditAction, &QAction::triggered, this, &ApplicationWindow::displayCreditDialog);
+
+    aboutMenu->addAction(creditAction);
+    ApplicationWindow::menuBar()->addMenu(aboutMenu);
+
     QObject::connect(centralWidget, &CentralWidget::sizeChanged, paintingToolBar, &PaintingToolBar::updatePosition);
 }
 
@@ -107,4 +119,28 @@ ApplicationWindow::~ApplicationWindow() {
 
 void ApplicationWindow::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
+}
+
+void ApplicationWindow::displayCreditDialog(bool) {     // note: there is either 1 leak of 32b for each display, or my leak-tracing utility sucks
+    if (creditDialog == nullptr) {
+        creditDialog = new QDialog(this);
+        auto dialogLayout = new QVBoxLayout();
+        auto box = new QGroupBox("Credit for icons", creditDialog);
+        box->setAlignment(Qt::AlignmentFlag::AlignHCenter);
+
+        auto creditLayout = new QVBoxLayout();
+        QLabel *label = new QLabel(box);
+        label->setText("<p>Icons used in this application are from <a href=\"https://github.com/free-icons/free-icons\">https://github.com/free-icons/free-icons</a></p>"
+                       "<p>Licensed under <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International (CC BY 4.0) License</a></p>");
+        label->setTextFormat(Qt::RichText);
+        label->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        label->setOpenExternalLinks(true);
+
+        creditLayout->addWidget(label);
+        box->setLayout(creditLayout);
+        dialogLayout->addWidget(box);
+        creditDialog->setLayout(dialogLayout);
+    }
+
+    creditDialog->show();
 }
