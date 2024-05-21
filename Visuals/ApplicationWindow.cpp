@@ -121,26 +121,25 @@ void ApplicationWindow::resizeEvent(QResizeEvent* event) {
     QMainWindow::resizeEvent(event);
 }
 
-void ApplicationWindow::displayCreditDialog(bool) {     // note: there is either 1 leak of 32b for each display, or my leak-tracing utility sucks
-    if (creditDialog == nullptr) {
-        creditDialog = new QDialog(this);
-        auto dialogLayout = new QVBoxLayout();
-        auto box = new QGroupBox("Credit for icons", creditDialog);
-        box->setAlignment(Qt::AlignmentFlag::AlignHCenter);
+void ApplicationWindow::displayCreditDialog(bool) {
+    QDialog creditDialog; // note: there is either 1 leak of 32b for each dialog display(even empty one), or my leak-tracing utility sucks
 
-        auto creditLayout = new QVBoxLayout();
-        QLabel *label = new QLabel(box);
-        label->setText("<p>Icons used in this application are from <a href=\"https://github.com/free-icons/free-icons\">https://github.com/free-icons/free-icons</a></p>"
-                       "<p>Licensed under <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International (CC BY 4.0) License</a></p>");
-        label->setTextFormat(Qt::RichText);
-        label->setTextInteractionFlags(Qt::TextBrowserInteraction);
-        label->setOpenExternalLinks(true);
+    auto dialogLayout = new QVBoxLayout();
+    auto box = new QGroupBox("Credit for icons", &creditDialog);
+    box->setAlignment(Qt::AlignmentFlag::AlignHCenter);
 
-        creditLayout->addWidget(label);
-        box->setLayout(creditLayout);
-        dialogLayout->addWidget(box);
-        creditDialog->setLayout(dialogLayout);
-    }
+    auto creditLayout = new QVBoxLayout();
+    QLabel *label = new QLabel(box);
+    label->setText("<p>Icons used in this application are from <a href=\"https://github.com/free-icons/free-icons\">https://github.com/free-icons/free-icons</a></p>"
+                   "<p>Licensed under <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution 4.0 International (CC BY 4.0) License</a></p>");
+    label->setTextFormat(Qt::RichText);
+    label->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    label->setOpenExternalLinks(true);
 
-    creditDialog->show();
+    creditLayout->addWidget(label);
+    box->setLayout(creditLayout);
+    dialogLayout->addWidget(box);
+    creditDialog.setLayout(dialogLayout);
+
+    creditDialog.exec();
 }

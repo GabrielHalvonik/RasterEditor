@@ -2,7 +2,6 @@
 
 #include <QMainWindow>
 
-class QDialog;
 class CentralWidget;
 class PaintingWidget;
 class PaintingToolBar;
@@ -25,6 +24,4 @@ private:
     CentralWidget* centralWidget { };
     PaintingWidget* paintingWidget { };
     PaintingToolBar* paintingToolBar { };
-
-    QDialog* creditDialog { }; // lazy-loadable
 };
