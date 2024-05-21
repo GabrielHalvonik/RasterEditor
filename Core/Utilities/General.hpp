@@ -35,13 +35,15 @@ namespace Utilities::General {
         if (rect.x() < 0) {
             rect.setX(0);
             rect.setWidth(rect.width() + rect.x());
-        } else if ((rect.x() + rect.width()) > size.width()) {
+        }
+        if ((rect.x() + rect.width()) > size.width()) {
             rect.setWidth(size.width() - rect.x());
         }
         if (rect.y() < 0) {
             rect.setY(0);
             rect.setHeight(rect.height() + rect.y());
-        } else if ((rect.y() + rect.height()) > size.height()) {
+        }
+        if ((rect.y() + rect.height()) > size.height()) {
             rect.setHeight(size.height() - rect.y());
         }
 
