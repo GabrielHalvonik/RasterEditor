@@ -8,7 +8,6 @@
 #include <QPaintEvent>
 
 #include "../Core/Utilities/General.hpp"
-#include "../Core/Utilities/Compression.hpp"
 #include "../Core/Painting/PaintingToolRegisty.hpp"
 
 PaintingWidget::PaintingWidget(PaintingToolRegistry* registry, const QSize& pageSize, QWidget* parent) :
@@ -84,7 +83,7 @@ void PaintingWidget::mouseReleaseEvent(QMouseEvent* event) {
 
         auto region = Utilities::General::clipRegionToWidgetBounds(affectedRegion.normalized(), QWidget::size());
 
-        pushIntoUndoStack(getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), region));
+        pushIntoUndoStack(Utilities::General::getImageCompressedDelta(bitmapSnapshot.data, bitmapSnapshot.region.width(), region));
         delete[] bitmapSnapshot.data; bitmapSnapshot.data = nullptr;   // todo: probably recycle outer area for next time
         auto optimized = undoStack.top().data.size();
         auto unoptimized = pageSize.width() * pageSize.height() * bytesPerPixel;
@@ -115,7 +114,7 @@ void PaintingWidget::keyPressEvent(QKeyEvent* event) {
             Delta delta = redoStack.top();
             redoStack.pop();
 
-            undoStack.push(getImageCompressedDelta(image.bits(), image.width(), delta.region));
+            undoStack.push(Utilities::General::getImageCompressedDelta(image.bits(), image.width(), delta.region));
 
             auto size = delta.region.width() * delta.region.height() * bytesPerPixel;
             uint8_t* decompressed = new uint8_t[delta.region.width() * delta.region.height() * bytesPerPixel];
@@ -131,7 +130,7 @@ void PaintingWidget::keyPressEvent(QKeyEvent* event) {
             Delta delta = undoStack.top();
             undoStack.pop();
 
-            redoStack.push(getImageCompressedDelta(image.bits(), image.width(), delta.region));
+            redoStack.push(Utilities::General::getImageCompressedDelta(image.bits(), image.width(), delta.region));
 
             auto size = delta.region.width() * delta.region.height() * bytesPerPixel;
             uint8_t* decompressed = new uint8_t[delta.region.width() * delta.region.height() * bytesPerPixel];
@@ -187,11 +186,4 @@ Snapshot PaintingWidget::getImageSnapshot(uint8_t* source, int sourceWidth, cons
     return snapshot;
 }
 
-Delta PaintingWidget::getImageCompressedDelta(uint8_t* source, int sourceWidth, const QRect& region) {
-    auto size = region.width() * region.height() * bytesPerPixel;
-    uint8_t* data = new uint8_t[size];
-    Utilities::General::getSubRectangle(data, source, sourceWidth, region);
-    auto result = Utilities::Compression::compressRunLengthEncoding(data, size);
-    delete[] data; data = nullptr;
-    return Delta({.region = region, .data = result });
-}
+

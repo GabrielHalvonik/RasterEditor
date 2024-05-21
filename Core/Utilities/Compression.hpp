@@ -5,7 +5,7 @@
 
 namespace Utilities::Compression {
 
-    std::vector<uint8_t> compressRunLengthEncoding(const uint8_t* data, int size, int bytesPerPixel = 4) {
+    inline std::vector<uint8_t> compressRunLengthEncoding(const uint8_t* data, int size, int bytesPerPixel = 4) {
         std::vector<uint8_t> compressed { };
         int i = 0;
         while (i < size) {
@@ -21,7 +21,7 @@ namespace Utilities::Compression {
         return compressed;
     }
 
-    void decompressRunLengthEncoding(const std::vector<uint8_t>& compressed, uint8_t* data, int size) {
+    inline void decompressRunLengthEncoding(const std::vector<uint8_t>& compressed, uint8_t* data, int size) {
         int index = 0;
         int dataIndex = 0;
         while (index < compressed.size() && dataIndex < size) {
